@@ -21,16 +21,6 @@ def prepareWordBufferForTrain(buffer):
         word.setFeat('LABEL', Word.invalidLabel())
 
 def prepareData(mcd, mcfFile, featModel, moves, filename, wordsLimit) :
-    try:
-        dataFile = open(filename, 'w', encoding='utf-8')
-    except IOError:
-        print('cannot open', filename)
-        exit(1)
-
-    dataFile.write(str(inputSize))
-    dataFile.write("\n")
-    dataFile.write(str(outputSize))
-    dataFile.write("\n")
     c = Config(mcfFile, mcd, dicos)
     numSent = 0
     numWords = 0
@@ -43,11 +33,7 @@ def prepareData(mcd, mcfFile, featModel, moves, filename, wordsLimit) :
             mvt = Oracle.oracle(c)
             outputVector = moves.buildOutputVector(mvt)
             featVec = c.extractFeatVec(featModel)
-            inputVector = featModel.buildInputVector(featVec, dicos)
-            np.savetxt(dataFile, inputVector, fmt="%s", delimiter='  ', newline=' ')
-            dataFile.write('\n')
-            np.savetxt(dataFile, outputVector, fmt="%s", delimiter='  ', newline=' ')
-            dataFile.write('\n')
+            listFeatVect.append(featVect)
 
             if(verbose == True) :
                 print("------------------------------------------")
@@ -61,6 +47,23 @@ def prepareData(mcd, mcfFile, featModel, moves, filename, wordsLimit) :
             if(c.isFinal()):
 #                print("is final is true")
                 break
+    
+    try:
+        dataFile = open(filename, 'w', encoding='utf-8')
+    except IOError:
+        print('cannot open', filename)
+        exit(1)
+    dataFile.write(str(inputSize))
+    dataFile.write("\n")
+    dataFile.write(str(outputSize))
+    dataFile.write("\n")
+    
+    for featVect in listFeatVect:
+        inputVector = featModel.buildInputVector(featVec, dicos)
+        np.savetxt(dataFile, inputVector, fmt="%s", delimiter='  ', newline=' ')
+        dataFile.write('\n')
+        np.savetxt(dataFile, outputVector, fmt="%s", delimiter='  ', newline=' ')
+        dataFile.write('\n')
 
 
             
