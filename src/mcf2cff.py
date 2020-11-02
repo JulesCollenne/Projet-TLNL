@@ -24,6 +24,8 @@ def prepareData(mcd, mcfFile, featModel, moves, filename, wordsLimit) :
     c = Config(mcfFile, mcd, dicos)
     numSent = 0
     numWords = 0
+    listMvt = []
+    listFeatVect = []
     while c.getBuffer().readNextSentence() and numWords < wordsLimit:
         numWords += c.getBuffer().getLength()
         numSent += 1
@@ -31,6 +33,7 @@ def prepareData(mcd, mcfFile, featModel, moves, filename, wordsLimit) :
         prepareWordBufferForTrain(c.getBuffer())
         while True :
             mvt = Oracle.oracle(c)
+            listMvt.append(mvt)
             outputVector = moves.buildOutputVector(mvt)
             featVec = c.extractFeatVec(featModel)
             listFeatVect.append(featVect)
@@ -57,9 +60,11 @@ def prepareData(mcd, mcfFile, featModel, moves, filename, wordsLimit) :
     dataFile.write("\n")
     dataFile.write(str(outputSize))
     dataFile.write("\n")
-    
-    for featVect in listFeatVect:
+    for i in len(listFeatVect):
+		featVect = listFeatVec[i]
+		mvt = listMvt[i]
         inputVector = featModel.buildInputVector(featVec, dicos)
+        outputVector = featModel.buildOutputVector(featVec, dicos)
         np.savetxt(dataFile, inputVector, fmt="%s", delimiter='  ', newline=' ')
         dataFile.write('\n')
         np.savetxt(dataFile, outputVector, fmt="%s", delimiter='  ', newline=' ')

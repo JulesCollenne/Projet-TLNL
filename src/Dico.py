@@ -13,7 +13,7 @@ class Dico:
 
         def getCode(self, symbol):
                 if not symbol in self.hash :
-                        return None
+                        return self.hash['NULL']
                 return self.hash[symbol]
 
         def getSymbol(self, code):
