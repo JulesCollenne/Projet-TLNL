@@ -42,7 +42,7 @@ class FeatModel:
                         print("error while reading featMod file : ", featModFilename, "container :", container,
                               "undefined")
                         exit(1)
-                    featArray.append((featType, container, int(position), wordFeature))
+                    featArray.append((featType, feature, container1, int(position1), container2, int(position2)))
         featModFile.close()
         return featArray
 
