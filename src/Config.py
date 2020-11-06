@@ -30,12 +30,12 @@ class Config:
         if self.getBuffer().endReached():
             sys.stderr.write("cannot shift : end of buffer reached\n")
             return False
-        self.getStack().push(self.getBuffer().currentIndex);
+        self.getStack().push(self.getBuffer().currentIndex)
         self.fwd()
         return True
 
     def red(self):
-        if (self.getStack().isEmpty()):
+        if self.getStack().isEmpty():
             sys.stderr.write("cannot reduce an empty stack !\n")
             return False
 
@@ -47,7 +47,7 @@ class Config:
         return True
 
     def right(self, label):
-        if (self.getStack().isEmpty()):
+        if self.getStack().isEmpty():
             print("cannot make a right move, the stack is empty!")
             return False
 
@@ -61,7 +61,7 @@ class Config:
         return res
 
     def left(self, label):
-        if (self.getStack().isEmpty()):
+        if self.getStack().isEmpty():
             print("cannot make a left move, the stack is empty!")
             return False
 
@@ -76,13 +76,13 @@ class Config:
     def applyMvt(self, mvt):
         mvt_type = mvt[0]
         mvt_label = mvt[1]
-        if (mvt_type == 'RIGHT'):
+        if mvt_type == 'RIGHT':
             return self.right(mvt_label)
-        elif (mvt_type == 'LEFT'):
+        elif mvt_type == 'LEFT':
             return self.left(mvt_label)
-        elif (mvt_type == 'SHIFT'):
+        elif mvt_type == 'SHIFT':
             return self.shift()
-        elif (mvt_type == 'REDUCE'):
+        elif mvt_type == 'REDUCE':
             return self.red()
         return False
 
@@ -94,7 +94,7 @@ class Config:
             return self.getBuffer().getWord(indexInBuffer)
         elif container == 'B':
             absoluteIndex = self.getBuffer().getCurrentIndex() + index
-            if absoluteIndex < self.getBuffer().getLength() and absoluteIndex >= 0:
+            if self.getBuffer().getLength() > absoluteIndex >= 0:
                 return self.getBuffer().getWord(absoluteIndex)
             else:
                 return None
@@ -102,9 +102,9 @@ class Config:
 
     def getFeat(self, featTuple):
         featType = featTuple[0]
-        if (featType == 'W'):
+        if featType == 'W':
             return self.getWordFeat(featTuple)
-        elif (featType == 'C'):
+        elif featType == 'C':
             return self.getConfFeat(featTuple)
 
     def getConfFeat(self, featTuple):
@@ -112,13 +112,13 @@ class Config:
         if featSubType == 'DIST':
             return self.getDistFeat(featTuple)
         elif featSubType == 'NLDEP':
-            return self.getNldepFeat(featTuple)
+            return self.getNlDepFeat(featTuple)
         elif featSubType == 'NRDEP':
-            return self.getNrdepFeat(featTuple)
+            return self.getNrDepFeat(featTuple)
         elif featSubType == 'LLDEP':
-            return self.getLldepFeat(featTuple)
+            return self.getLlDepFeat(featTuple)
         elif featSubType == 'LRDEP':
-            return self.getLrdepFeat(featTuple)
+            return self.getLrDepFeat(featTuple)
         elif featSubType == 'SH':
             return self.getStackHeightFeat(featTuple)
         return 'NULL'
@@ -128,27 +128,42 @@ class Config:
         index = featTuple[3]
 
         word = self.getWordWithRelativeIndex(container, index)
-        if word == None:
+        if word is None:
             return 'NULL'
-        return string(len(word.getLeftDaughters()))
+        return str(len(word.getLeftDaughters()))
 
     def getNrDepFeat(self, featTuple):
         container = featTuple[2]
         index = featTuple[3]
 
         word = self.getWordWithRelativeIndex(container, index)
-        if word == None:
+        if word is None:
             return 'NULL'
-        return string(len(word.getRightDaughters()))
+        return str(len(word.getRightDaughters()))
 
     def getLlDepFeat(self, featTuple):
-        return 'NULL'
+        container = featTuple[2]
+        index = featTuple[3]
+        word = self.getWordWithRelativeIndex(container, index)
+        if word is 'NULL':
+            return 'NULL'
+        lldep_ind = word.getLeftDaughters()[-1]
+        print(word.getLeftDaughters())
+        lldep = self.getWordWithRelativeIndex(container, index + lldep_ind)
+        return lldep.getFeat('LABEL')
 
     def getLrDepFeat(self, featTuple):
-        return 'NULL'
+        container = featTuple[2]
+        index = featTuple[3]
+        word = self.getWordWithRelativeIndex(container, index)
+        if word is 'NULL':
+            return 'NULL'
+        lrdep_ind = word.getRightDaughters()[-1]
+        lrdep = self.getWordWithRelativeIndex(container, index + lrdep_ind)
+        return lrdep.getFeat('LABEL')
 
     def getStackHeightFeat(self, featTuple):
-        return string(self.getStack().getLength())
+        return str(self.getStack().getLength())
 
     def getDistFeat(self, featTuple):
         containerWord1 = featTuple[1]
@@ -158,7 +173,7 @@ class Config:
         word1 = self.getWordWithRelativeIndex(containerWord1, indexWord1)
         word2 = self.getWordWithRelativeIndex(containerWord2, indexWord2)
 
-        if word1 == None or word2 == None:
+        if word1 is None or word2 is None:
             return 'NULL'
         return word1.getIndex() - word2.getIndex()
 
@@ -168,7 +183,7 @@ class Config:
         tape = featTuple[3]
 
         word = self.getWordWithRelativeIndex(container, index)
-        if word == None:
+        if word is None:
             return 'NULL'
         return word.getFeat(tape)
 
@@ -176,8 +191,8 @@ class Config:
         currentIndex = self.getBuffer().getCurrentIndex()
         print('BUFFER = ', end='')
         for i in range(currentIndex - 2, currentIndex + 2):
-            if ((i >= 0) and (i < len(self.getBuffer().array))):
-                if (i == currentIndex):
+            if (i >= 0) and (i < len(self.getBuffer().array)):
+                if i == currentIndex:
                     print('[[', i, ':', self.getBuffer().getWord(i).getFeat('POS'), ']] ', end=' ')
                 else:
                     print('[', i, ':', self.getBuffer().getWord(i).getFeat('POS'), '] ', end=' ')

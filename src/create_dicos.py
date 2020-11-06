@@ -2,8 +2,7 @@ import sys
 from Dicos import Dicos
 from Mcd import Mcd
 
-
-if len(sys.argv) < 4 :
+if len(sys.argv) < 4:
     print('usage:', sys.argv[0], 'mcf_file mcd_file dico_file')
     exit(1)
 
@@ -18,5 +17,3 @@ dicos = Dicos(mcd)
 dicos.populateFromMcfFile(mcfFileName, mcd, verbose=False)
 print('saving dicos in file ', dicoFileName)
 dicos.printToFile(dicoFileName)
-
-

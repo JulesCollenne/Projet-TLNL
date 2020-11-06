@@ -1,12 +1,12 @@
 class Word:
     def __init__(self):
-        self.featDic = {}         # dictionnaire dans lequel sont stockés les word features
-        self.leftDaughters = []   # liste des indices des dépendants gauches
+        self.featDic = {}  # dictionnaire dans lequel sont stockés les word features
+        self.leftDaughters = []  # liste des indices des dépendants gauches
         self.rightDaughters = []  # liste des indices des dépendants droits
         self.index = self.invalidIndex()
 
     def getFeat(self, featName):
-        if(not featName in self.featDic):
+        if featName not in self.featDic:
             print('WARNING : feat', featName, 'does not exist')
             return None
         else:
@@ -21,16 +21,15 @@ class Word:
     def addRightDaughter(self, index):
         self.rightDaughters.append(index)
 
-    def getIndex(self) :
+    def getIndex(self):
         return self.index
 
     def getRightDaughters(self):
         return self.rightDaughters
-    
+
     def getLeftDaughters(self):
         return self.leftDaughters
-    
-    
+
     def affiche(self, mcd):
         first = True
         for columnNb in range(mcd.getNbCol()):
@@ -40,17 +39,17 @@ class Word:
                 else:
                     print('\t', end='')
                 print(self.getFeat(mcd.getColName(columnNb)), end='')
-#        print('')
+
+    #        print('')
 
     @staticmethod
     def fakeWordConll():
         w = Word()
         return w
 
-        
     @staticmethod
     def fakeWord(mcd):
-        w =Word()
+        w = Word()
         for elt in mcd.getArray():
             (col, feat, type, status) = elt
             w.setFeat(feat, 'ROOT')
@@ -68,4 +67,3 @@ class Word:
     @staticmethod
     def invalidLabel():
         return ''
-

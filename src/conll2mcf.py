@@ -3,19 +3,20 @@ from WordBuffer import WordBuffer
 from Word import Word
 from Mcd import Mcd
 
-if len(sys.argv) < 3 :
+if len(sys.argv) < 3:
     print('usage:', sys.argv[0], 'conllFile mcdFile')
     exit(1)
+
 
 def simplifyLabel(label):
     simpleLabel = []
     for i in range(len(label)):
-        if not label[i] == ':' :
+        if not label[i] == ':':
             simpleLabel.append(label[i])
-        else :
+        else:
             break
     return ''.join(simpleLabel)
-            
+
 
 conlluFilename = sys.argv[1]
 mcdFilename = sys.argv[2]
@@ -31,15 +32,15 @@ except IOError:
 tokens = []
 wordBuffer = WordBuffer()
 for ligne in conlluFile:
-    if ligne[0] == '\n' :
+    if ligne[0] == '\n':
         wordBuffer.getWord(wordBuffer.currentIndex - 1).setFeat('EOS', '1')
         next
-    elif ligne[0] == '#' :
-        #print("commentaire")
+    elif ligne[0] == '#':
+        # print("commentaire")
         next
-    else :
+    else:
         ligne = ligne.rstrip()
-#                                1	Je	il	PRON	_	Number=Sing|Person=1|PronType=Prs	2	nsubj	_	_
+        #                                1	Je	il	PRON	_	Number=Sing|Person=1|PronType=Prs	2	nsubj	_	_
         tokens = ligne.split("\t")
         if '-' not in tokens[0]:
             w = Word()
@@ -55,14 +56,10 @@ for ligne in conlluFile:
             w.setFeat('LABEL', label)
             w.setFeat('X2', tokens[8])
             w.setFeat('X3', tokens[9])
+            w.setFeat('LANG', tokens[10])
             w.setFeat('EOS', '0')
             wordBuffer.addWord(w)
 
-conlluFile.close();
+conlluFile.close()
 
 wordBuffer.affiche(mcd)
-
-
-
-
-
