@@ -1,0 +1,34 @@
+make lang=ar feat_model=$1 epochs=$2 dropout=$3
+make lang=bg feat_model=$1 epochs=$2 dropout=$3
+make lang=ca feat_model=$1 epochs=$2 dropout=$3
+make lang=cs feat_model=$1 epochs=$2 dropout=$3
+make lang=da feat_model=$1 epochs=$2 dropout=$3
+make lang=de feat_model=$1 epochs=$2 dropout=$3
+make lang=el feat_model=$1 epochs=$2 dropout=$3
+make lang=en feat_model=$1 epochs=$2 dropout=$3
+make lang=es feat_model=$1 epochs=$2 dropout=$3
+make lang=et feat_model=$1 epochs=$2 dropout=$3
+make lang=eu feat_model=$1 epochs=$2 dropout=$3
+
+make lang=fa feat_model=$1 epochs=$2 dropout=$3
+make lang=fr feat_model=$1 epochs=$2 dropout=$3
+make lang=he efeat_model=$1 epochs=$2 dropout=$3
+make lang=hi feat_model=$1 epochs=$2 dropout=$3
+make lang=hr feat_model=$1 epochs=$2 dropout=$3
+make lang=hu feat_model=$1 epochs=$2 dropout=$3
+make lang=id feat_model=$1 epochs=$2 dropout=$3
+make lang=it feat_model=$1 epochs=$2 dropout=$3
+make lang=ja feat_model=$1 epochs=$2 dropout=$3
+make lang=ko feat_model=$1 epochs=$2 dropout=$3
+make lang=lv feat_model=$1 epochs=$2 dropout=$3
+
+make lang=nl feat_model=$1 epochs=$2 dropout=$3
+make lang=nno feat_model=$1 epochs=$2 dropout=$3
+make lang=nob feat_model=$1 epochs=$2 dropout=$3
+make lang=pl feat_model=$1 epochs=$2 dropout=$3
+make lang=pt feat_model=$1 epochs=$2 dropout=$3
+make lang=ro feat_model=$1 epochs=$2 dropout=$3
+make lang=sl feat_model=$1 epochs=$2 dropout=$3
+make lang=sv feat_model=$1 epochs=$2 dropout=$3
+make lang=vi feat_model=$1 epochs=$2 dropout=$3
+make lang=zh feat_model=$1 epochs=$2 dropout=$3

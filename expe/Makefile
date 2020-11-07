@@ -1,28 +1,40 @@
 train_conll=../data/train_$(lang).conllu
-train_proj_conll=./out/train_$(lang)_proj.conllu
-train_mcf=./out/train_$(lang)_pgle.mcf
-train_cff=./out/train_$(lang).cff
+train_proj_conll=./out/$(outpath)/train_$(lang)_proj.conllu
+train_mcf=./out/$(outpath)/train_$(lang)_pgle.mcf
+train_cff=./out/$(outpath)/train_$(lang).cff
 train_word_limit=10000
 
 dev_conll=../data/dev_$(lang).conllu
-dev_proj_conll=./out/dev_$(lang)_proj.conllu
-dev_mcf=./out/dev_$(lang)_pgle.mcf
-dev_cff=./out/dev_$(lang).cff
+dev_proj_conll=./out/$(outpath)/dev_$(lang)_proj.conllu
+dev_mcf=./out/$(outpath)/dev_$(lang)_pgle.mcf
+dev_cff=./out/$(outpath)/dev_$(lang).cff
 dev_word_limit=5000
 
 test_conll=../data/test_$(lang).conllu
-test_mcf=./out/test_$(lang)_pgle.mcf
-test_mcf_hyp=./out/test_$(lang)_hyp.mcf
+test_mcf=./out/$(outpath)/test_$(lang)_pgle.mcf
+test_mcf_hyp=./out/$(outpath)/test_$(lang)_hyp.mcf
 test_word_limit=700
 
-feat_model=basic.fm
 
-dicos=./out/$(lang)_train.dic
+
+feat_model=basic.fm
+epochs=10
+dropout=0.4
+
+outpath=fm_$(feat_model)/epochs_$(epochs)/dropout_$(dropout)
+
+dicos=./out/$(outpath)/$(lang)_train.dic
 dicos=PLE.dic
-model=./out/$(lang).keras
-results = ./out/$(lang).res
+model=./out/$(outpath)/$(lang).keras
+results = ./out/$(outpath)/res/$(lang).res
 
 mcd_pgle=PGLE.mcd
+
+all : directories eval
+
+directories: 
+	mkdir -p out/$(outpath)
+	mkdir -p out/$(outpath)/res
 
 eval: $(test_mcf_hyp)
 	python3 ../src/eval_mcf.py $(test_mcf) $(test_mcf_hyp) $(mcd_pgle) $(mcd_pgle) $(lang) > $(results)
@@ -32,7 +44,7 @@ $(test_mcf_hyp): $(test_mcf) $(model)
 	python3 ../src/tbp_decode.py $(test_mcf) $(model) $(dicos) $(feat_model) $(mcd_pgle) $(test_word_limit) > $(test_mcf_hyp)
 
 $(model): $(train_cff) $(dev_cff)
-	python3 ../src/tbp_train.py $(train_cff) $(dev_cff) $(model)
+	python3 ../src/tbp_train.py $(train_cff) $(dev_cff) $(model) $(epochs) $(dropout)
 
 
 $(train_cff): $(train_mcf) $(dicos)
