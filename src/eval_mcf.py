@@ -99,4 +99,3 @@ if verbose :
 
 
 #    print("REF GOV = ", refGov, "HYP GOV = ", hypGov, "REF LABEL = ", refLabel, "HYP LABEL = ", hypLabel)
-
