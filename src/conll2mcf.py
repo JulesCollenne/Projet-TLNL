@@ -55,6 +55,7 @@ for ligne in conlluFile:
             w.setFeat('LABEL', label)
             w.setFeat('X2', tokens[8])
             w.setFeat('X3', tokens[9])
+            w.setFeat('LANG', tokens[10])
             w.setFeat('EOS', '0')
             wordBuffer.addWord(w)
 

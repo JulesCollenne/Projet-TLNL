@@ -44,7 +44,8 @@ def printConllSentence(wordBuffer):
         print(w.getFeat('GOV'), end = '\t')
         print(w.getFeat('LABEL'), end = '\t')
         print(w.getFeat('X2'), end = '\t')
-        print(w.getFeat('X3'))
+        print(w.getFeat('X3'), end = '\t')
+        print(w.getFeat('LANG'))
     print()
 
 
@@ -91,6 +92,7 @@ for ligne in conlluFile:
             w.setFeat('LABEL', tokens[7])
             w.setFeat('X2', tokens[8])
             w.setFeat('X3', tokens[9])
+            w.setFeat('LANG', tokens[10])
             w.setFeat('EOS', '0')
             wordBuffer.addWord(w)
             

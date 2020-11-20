@@ -19,7 +19,7 @@ class FeatModel:
             if(container != "B" and container != "S"):
                 print("error while reading featMod file : ", featModFilename, "container :", container, "undefined")
                 exit(1)
-            if not wordFeature in set(['POS', 'LEMMA','LABEL', 'FORM']):
+            if not wordFeature in set(['POS','LANG', 'LEMMA','LABEL', 'FORM']):
                 print("error while reading featMod file : ", featModFilename, "wordFeature :", wordFeature, "undefined")
                 exit(1)
             featArray.append((featType, container, int(position), wordFeature))
